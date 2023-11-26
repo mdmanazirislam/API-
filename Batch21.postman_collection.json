@@ -1,0 +1,375 @@
+{
+	"info": {
+		"_postman_id": "9d2cdc08-8796-4fdb-82b2-a32957ba10d1",
+		"name": "Batch21",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31214285"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status code is 200', function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"})\r",
+							"\r",
+							"var responseJson = pm.response.json();\r",
+							"\r",
+							"pm.test('Number of plans returned = ' + responseJson.length, function () {\r",
+							"    pm.expect(responseJson.length).to.equal(4);\r",
+							"})\r",
+							"\r",
+							"var data = pm.response.json();\r",
+							"\r",
+							"pm.test('Length = ' + data.length, function () {\r",
+							"    pm.expect(data.length).to.equal(2);\r",
+							"})\r",
+							"\r",
+							"pm.test('Status code is 201', function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"})\r",
+							"\r",
+							"pm.test('Status code for get specific student is 200', function () {\r",
+							"    var student_id = 526716;\r",
+							"    pm.expect(pm.response.code).to.equal(200, 'Expected status code 200, but got ' + pm.response.code);\r",
+							"})\r",
+							"\r",
+							"pm.test('Student fields value validation', function () {\r",
+							"    var response = pm.response.json();\r",
+							"    var data = response.booking;\r",
+							"    pm.expect(data.firstname).to.equal('', 'Expected first name \\'\\', but got ' + data.firstname);\r",
+							"    pm.expect(data.lastname).to.equal('', 'Expected last name \\'\\', but got ' + data.lastname);\r",
+							"    pm.expect(data.totalprice).to.equal(0, 'Expected total price 0, but got ' + data.totalprice);\r",
+							"    pm.expect(data.depositpaid).to.equal(true, 'Expected deposit paid true, but got ' + data.depositpaid);\r",
+							"    pm.expect(data.bookingdates.checkin).to.equal('', 'Expected check-in date \\'\\', but got ' + data.bookingdates.checkin);\r",
+							"    pm.expect(data.bookingdates.checkout).to.equal('', 'Expected check-out date \\'\\', but got ' + data.bookingdates.checkout);\r",
+							"    pm.expect(data.additionalneeds).to.equal('', 'Expected additional needs \\'\\', but got ' + data.additionalneeds);\r",
+							"});\r",
+							"\r",
+							"function test_status_code_for_create_technical_skills() {\r",
+							"    var st_id = 123;\r",
+							"    var response = make_post_request_to_create_technical_skills(st_id);\r",
+							"    pm.expect(response.status_code).to.equal(200, 'Expected status code 200, but got ' + response.status_code);\r",
+							"}\r",
+							"\r",
+							"\r",
+							"function test_status_code_for_create_student_address() {\r",
+							"    // Replace {id} with the actual student ID you want to associate the address with\r",
+							"    var st_id = 123;  // Replace with the actual student ID\r",
+							"    // Make the POST request to create student address\r",
+							"    var response = make_post_request_to_create_student_address(st_id);\r",
+							"\r",
+							"    // Validate the status code\r",
+							"    pm.expect(response.status_code).to.equal(200, 'Expected status code 200, but got ' + response.status_code);\r",
+							"}\r",
+							"\r",
+							"\r",
+							"function test_status_and_message_value_validation_for_create_student_address() {\r",
+							"    // Replace {id} with the actual student ID you want to associate the address with\r",
+							"    var st_id = 123;  // Replace with the actual student ID\r",
+							"    // Make the POST request to create student address\r",
+							"    var response = make_post_request_to_create_student_address(st_id);\r",
+							"\r",
+							"    // Validate status and message fields in the response\r",
+							"    var data = response.json();\r",
+							"    pm.expect(data.status).to.equal(\"true\", \"Expected status 'true', but got \" + data.status);\r",
+							"    pm.expect(data.msg).to.equal(\"Add data success\", \"Expected message 'Add data success', but got \" + data.msg);\r",
+							"}\r",
+							"\r",
+							"function test_status_code_for_get_final_student_details() {\r",
+							"    // Replace {id} with the actual student ID you want to retrieve\r",
+							"    var st_id = 4165425;\r",
+							"    // Make the GET request to get final student details\r",
+							"    var response = make_get_request_to_get_final_student_details(st_id);\r",
+							"    // Validate the status code\r",
+							"    pm.expect(response.status_code).to.equal(200, 'Expected status code 200, but got ' + response.status_code);\r",
+							"}\r",
+							"\r",
+							"function test_field_value_validation_for_get_final_student_details() {\r",
+							"    // Replace {id} with the actual student ID you want to retrieve\r",
+							"    var st_id = 4165425;\r",
+							"    // Make the GET request to get final student details\r",
+							"    var response = make_get_request_to_get_final_student_details(st_id);\r",
+							"    // Validate field values\r",
+							"    var data = response.json().data;\r",
+							"    // Validate Language, Year of Experience\r",
+							"    var technical_details = data.TechnicalDetails[0];\r",
+							"    pm.expect(technical_details.language).to.eql([\"sample string 1\", \"sample string 2\"], \"Incorrect language values\");\r",
+							"    pm.expect(technical_details.yearexp).to.eql(\"sample string 2\", \"Incorrect year of experience value\");\r",
+							"    // Validate House Number, City, Country, Mobile in Address\r",
+							"    var address_details = data.Address[0].Permanent_Address;\r",
+							"    pm.expect(address_details.House_Number).to.eql(\"sample string 1\", \"Incorrect house number value\");\r",
+							"    pm.expect(address_details.City).to.eql(\"sample string 2\", \"Incorrect city value\");\r",
+							"    pm.expect(address_details.Country).to.eql(\"sample string 4\", \"Incorrect country value\");\r",
+							"    var phone_numbers = address_details.PhoneNumber;\r",
+							"    pm.expect(phone_numbers[0].Mobile).to.eql(\"123456789\", \"Incorrect mobile value\");\r",
+							"    // Validate Current Address is null\r",
+							"    pm.expect(data.Address[0].Current_Address).to.be.null;\r",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var firstName = pm.variables.replaceIn(\"{{$randomFirstName}}\")\r",
+							"pm.globals.get(\"variable_key\");\r",
+							"\r",
+							"console.log(\"First Name: \"+ firstName)\r",
+							"pm.environment.set(\"firstName\", firstName)\r",
+							"\r",
+							"var lastName = pm.variables.replaceIn(\"{{$randomLastName}}\")\r",
+							"\r",
+							"console.log(\"Last Name: \"+ lastName)\r",
+							"\r",
+							"pm.environment.set(\"lastName\", lastName)\r",
+							"var num = pm.variables.replaceIn(\"{{$randomInt}}\") \r",
+							"const moment = require('moment') \r",
+							"const today = moment()\r",
+							"pm.environment.set(\"checkin\", today.add(num,'Y').add(num,'M)').format(\"YYYY-MM-DD\"))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"firstname\" : \"SELECT * FROM Products ORDER BY Price\",\r\n\t\"lastname\" : \"{{lastName}}\",\r\n\t\"totalprice\" : 111,\r\n\t\"depositpaid\" : true,\r\n\t\"bookingdates\" : {\r\n    \t\"checkin\" : \"{{checkin}}\",\r\n    \t\"checkout\" : \"2019-01-01\"\r\n\t},\r\n\t\"additionalneeds\" : \"Breakfast\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/booking/",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"booking",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var firstname = pm.variables.replaceIn($randomFirstName) \r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"[ \r",
+							"{ \r",
+							"\"id\": 526717, \r",
+							"\"first_name\": \"Anna\", \r",
+							"\"middle_name\": \"Banana\", \r",
+							"\"last_name\": null, \r",
+							"\"date_of_birth\":\"12/23/1990\" \r",
+							"},\r",
+							"{ \r",
+							"\"id\": 526716, \r",
+							"\"first_name\": \"sample \", \r",
+							"\"middle_name\": \"sample \", \r",
+							"\"last_name\": \"sample \", \r",
+							"\"date_of_birth\": \"sample \" \r",
+							"},\r",
+							"{ \r",
+							"\"id\": 526715, \r",
+							"\"first_name\": \"Anna\", \r",
+							"\"middle_name\": \"Banana last_name=Uzumaki\", \r",
+							"\"last_name\": null, \r",
+							"\"date_of_birth\": \"12/23/1990\" \r",
+							"} \r",
+							"] \r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "pm.test('Status - 404', function ()\r\npm.response.to.have.status(404);\r\n})\r\n\r\nvar statusCode = pm.response.code;\r\nconsole.log(statusCode)\r\n\r\nif (statusCode == 200){\r\n    pm.test('First Name Validation', function () {\r\n        pm.expect(pm.response.json().booking).to.exist.and.to.have.property('firstname', pm.environment.get('firstName'));\r\n    })\r\n\r\n    pm.test('Last Name Validation', function (){\r\n        pm.expect(pm.response.json().booking).to.exist.and.to.have.property('lastname', pm.environment.get('lastName'));\r\n    })\r\n}\r\nelse if(statusCode == 404) {\r\n    pm.test(\"Not Found\")\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/{{id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Status - 404', function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"})\r",
+							"\r",
+							"pm.test('First Name Validation', function () {\r",
+							"    pm.expect(pm.response.json()).to.exist.and.to.have.property('firstname', pm.environment.get('firstName'));\r",
+							"})\r",
+							"\r",
+							"pm.test('Last Name Validation', function () {\r",
+							"    pm.expect(pm.response.json().booking).to.exist.and.to.have.property('lastname', pm.environment.get('lastName'));\r",
+							"})\r",
+							"\r",
+							"var data = pm.response.json()\r",
+							"\r",
+							"pm.environment.set(\"accessToken\" , data.token);\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"username\": \"admin\",\r\n\t\"password\": \"password123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/auth",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var firstName = pm.variables.replaceIn(\"{{$randomFirstName}}\")\r",
+							"\r",
+							"console.log(\"First Name: \"+ firstName)\r",
+							"pm.environment.set(\"firstName\", firstName)\r",
+							"\r",
+							"var lastName = pm.variables.replaceIn(\"{{$randomLastName}}\")\r",
+							"\r",
+							"console.log(\"Last Name: \"+ lastName)\r",
+							"\r",
+							"pm.environment.set(\"lastName\", lastName)\r",
+							"var num = pm.variables.replaceIn(\"{{$randomInt}}\") \r",
+							"const moment = require('moment') \r",
+							"const today = moment()\r",
+							"pm.environment.set(\"checkin\", today.add(num,'Y').add(num,'M)').format(\"YYYY-MM-DD\"))"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"\r",
+							"pm.test(\"Status - 403\", function () {\r",
+							"    pm.response.to.have.status(403);\r",
+							"});\r",
+							"\r",
+							"pm.environment.set(\"id\", jsonData.bookingid);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token={{token=f92e682d3078276}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"firstname\" : \"{{firstName}}\",\r\n\t\"lastname\" : \"{{lastName}}\",\r\n\t\"totalprice\" : 111,\r\n\t\"depositpaid\" : true,\r\n\t\"bookingdates\" : {\r\n    \t\"checkin\" : \"{{checkin}}\",\r\n    \t\"checkout\" : \"2019-01-01\"\r\n\t},\r\n\t\"additionalneeds\" : \"Breakfast\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseURL}}/booking/{{id}}",
+					"host": [
+						"{{baseURL}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete",
+			"request": {
+				"method": "DELETE",
+				"header": []
+			},
+			"response": []
+		}
+	]
+}
